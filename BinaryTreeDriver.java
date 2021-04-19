@@ -15,16 +15,30 @@ public class BinaryTreeDriver {
 		
 		BinaryTree<String> bt = new BinaryTree<String>(one);
 		one.setLeft(two);
-		one.setRight(five);
-		two.setLeft(three);
-		two.setRight(four);
-		five.setLeft(six);
-		five.setRight(nine);
-		six.setLeft(seven);
-		six.setRight(eight);
+		one.setRight(three);
+		two.setLeft(four);
+		two.setRight(five);
+		three.setLeft(six);
+		three.setRight(seven);
+		six.setLeft(eight);
+		six.setRight(nine);
 		
-		System.out.println(bt.preorder());
+		long start1,end1,diff1;
 		
+		start1 = System.nanoTime();
+		bt.preOrderTraversal(one);
+
+		end1 = System.nanoTime();
+		diff1 = end1-start1;
+
+		System.out.println("Time taken by LinkedList = "+diff1);
+		
+		start1 = System.nanoTime();
+		bt.maints(one);
+		end1 = System.nanoTime();
+		diff1 = end1-start1;
+		System.out.println("Time taken by LinkedList = "+diff1);
+		//System.out.println("\n"+bt.preorder());
 	}// Ending bracket of method main
 	
 }// Ending bracket of class BinaryTreeDriver
