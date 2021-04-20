@@ -5,18 +5,6 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class BinaryTree<T extends Comparable<T>> {
-	static BTNode<String> one = new BTNode<String>("1");
-	static BTNode<String> two = new BTNode<String>("2");
-	static BTNode<String> three = new BTNode<String>("3");
-	static BTNode<String> four = new BTNode<String>("4");
-	static BTNode<String> five = new BTNode<String>("5");
-	static BTNode<String> six = new BTNode<String>("6");
-	static BTNode<String> seven = new BTNode<String>("7");
-	static BTNode<String> eight = new BTNode<String>("8");
-	static BTNode<String> nine = new BTNode<String>("9");
-
-	static BinaryTree<String> bt = new BinaryTree<String>(one);
-
 	private BTNode<T> root;
 
 	/**
@@ -35,13 +23,7 @@ public class BinaryTree<T extends Comparable<T>> {
 	}// Ending bracket of constructor
 
 	/**
-	 * @param newRoot
-	 */
-	private void setRoot(BTNode<T> newRoot) {
-		this.root = newRoot;
-	}// Ending bracket of method setRoot
-
-	/**
+	 * Returns root node
 	 * @return
 	 */
 	public BTNode<T> getRoot() {
@@ -49,11 +31,20 @@ public class BinaryTree<T extends Comparable<T>> {
 	}// Ending bracket of method getRoot
 
 	/**
-	 * @param nod
+	 * Adds a node in the Binary Tree
+	 * @param newNode
 	 */
-	public void remove(BTNode<T> nod) {
-		if(nod != null) {
-			if(nod==this.getRoot()) {
+	public void addNode(BTNode<T> newNode) {
+		this.addRecursive(newNode, this.getRoot());
+	}//Ending Bracket of Method
+	
+	/**
+	 * Removes a node in the Binary Tree
+	 * @param removeNode
+	 */
+	public void removeNode(BTNode<T> removeNode) {
+		if(removeNode != null) {
+			if(removeNode==this.getRoot()) {
 				this.setRoot(null);
 				return;
 			}//Ending bracket of if statement.
@@ -63,13 +54,13 @@ public class BinaryTree<T extends Comparable<T>> {
 				BTNode<T> mynode = nodeStack.peek();
 				nodeStack.pop();
 				if (mynode.getRight() != null) {
-					if(mynode.getRight()==nod) {
+					if(mynode.getRight()==removeNode) {
 						mynode.setRight(null);
 						return;
 					}//Ending bracket of if statement.
 					nodeStack.push(mynode.getRight());
 				}if (mynode.getLeft() != null) {
-					if(mynode.getLeft()==nod) {
+					if(mynode.getLeft()==removeNode) {
 						mynode.setLeft(null);
 						return;
 					}//Ending bracket of if statement.
@@ -77,23 +68,77 @@ public class BinaryTree<T extends Comparable<T>> {
 				}//Ending bracket of if statement.
 			}//Ending Bracket of a While Loop
 		}//Ending bracket of if statement.
-	}
-	
-	/**
-	 * @return
-	 */
-	public String preorder() {
-		return this.preOrderTraversal(this.root);
-	}// Ending bracket of method preOrderTraversalFromRoot
+	}//Ending Bracket of Method
 
 	/**
-	 * @param node
-	 * @return
+	 * Returns a string starting from a specified root node
+	 * @param your root node
+	 * @return preorder String
 	 */
 	public String preorder(BTNode<T> node) {
 		return this.preOrderTraversal(node);
 	}// Ending bracket of method preOrderTraversal
 
+	/**
+	 * Returns a string starting from a specified root node
+	 * @param your root node
+	 * @return inorder String
+	 */
+	public String inorder(BTNode<T> node) {
+		return this.inOrderTraversal(node);
+	}// Ending bracket of method preOrderTraversal
+	
+	/**
+	 * Returns a string starting from a specified root node
+	 * @param your root node
+	 * @return postorder String
+	 */
+	public String postorder(BTNode<T> node) {
+		return this.postOrderTraversal(node);
+	}// Ending bracket of method preOrderTraversal
+	
+	/**
+	 * Returns a string starting from a specified root node
+	 * @param your root node
+	 * @return levelorder String
+	 */
+	public String levelorder(BTNode<T> node) {
+		return this.levelOrderTraversal(node);
+	}// Ending bracket of method preOrderTraversal
+	
+	/**
+	 *Normal toString method
+	 *Uses levelorder for to String
+	 */
+	public String toString() {
+		return this.levelorder(this.getRoot());
+	}//ending bracket of method
+	
+	//private methods below
+	
+	/**
+	 * Sets the Root Node
+	 * @param newRoot
+	 */
+	private void setRoot(BTNode<T> newRoot) {
+		this.root = newRoot;
+	}// Ending bracket of method setRoot
+	
+	/**
+	 * adds a node using recursion
+	 * @param newNode the new Node
+	 * @param rootNode the starting node to add below
+	 */
+	private void addRecursive(BTNode<T> newNode, BTNode<T> rootNode) {
+		if(rootNode==null) {
+			rootNode = newNode;
+		}else if(newNode.compareTo(rootNode)<0) {
+			this.addRecursive(newNode, rootNode.getRight());
+		} else if(newNode.compareTo(rootNode)>=0) {
+			this.addRecursive(newNode, rootNode.getLeft());
+		}//Ending bracket of if statement.
+	}//Ending Bracket of Method
+	
 	/**
 	 * preOrder Recursion-private method
 	 * @param BTNode<T> node
@@ -163,6 +208,37 @@ public class BinaryTree<T extends Comparable<T>> {
 			sb.append(" ");
 		}//Ending bracket of if statement.
 		return sb.toString();
+	}//Ending Bracket of Method
+
+	
+	
+	//EVERYTHING BELOW HERE IS UNUSED (Just for my enjoyment) lol
+	
+	/**
+	 * adds a node using iteration
+	 * @param newNode the new Node
+	 * @param rootNode the starting node to add below
+	 */
+	private void addIterative(BTNode<T> newNode, BTNode<T> rootNode) {
+		boolean isDone=false;
+		BTNode<T> tempNode=rootNode;
+		if(tempNode==null) {
+			tempNode= newNode;
+			return;
+		} //Ending bracket of if statement.
+		do {
+			if(newNode.compareTo(tempNode)<0 && tempNode.getRight()!=null) {
+				tempNode=tempNode.getRight();
+			}else if(newNode.compareTo(tempNode)>=0 && tempNode.getLeft()!=null) {
+				tempNode=tempNode.getLeft();
+			}else if(newNode.compareTo(tempNode)<0 && tempNode.getRight()==null) {
+				tempNode.setRight(newNode);
+				break;
+			}else if(newNode.compareTo(tempNode)>=0 && tempNode.getLeft()==null) {
+				tempNode.setRight(newNode);
+				break;
+			}//Ending bracket of if statement.
+		}while(!isDone);
 	}//Ending Bracket of Method
 
 	/**
@@ -239,106 +315,5 @@ public class BinaryTree<T extends Comparable<T>> {
 		}//Ending bracket of if statement.
 		return sb.toString();
 	}//Ending Bracket of Method
-
-	
-	public static void main(String[] args) {
-		one.setLeft(two);
-		one.setRight(three);
-		two.setLeft(four);
-		two.setRight(five);
-		three.setLeft(six);
-		three.setRight(seven);
-		four.setLeft(eight);
-		four.setRight(nine);
-
-		long start1,end1,diff1,diff2 = 0;
-
-		System.out.println(bt.levelOrderTraversal(bt.getRoot()));
-		bt.remove(four);
-		System.out.println(bt.levelOrderTraversal(bt.getRoot()));
-
-		/*Testing fastest method for printing a whole tree.(preorderIterative seems to be fastest.*/
-		//		for(int i=0; i<10000000; i++) {
-		//		start1 = System.nanoTime();
-		//		bt.preOrderTraversal(one);
-		//		end1 = System.nanoTime();
-		//		diff1 = end1-start1;
-		//		if(i>1) {
-		//			diff2+=diff1;
-		//		}
-		//		}System.out.println((diff2/9999999));
-		//		diff2 = 0;
-		//		for(int i=0; i<10000000; i++) {
-		//		start1 = System.nanoTime();
-		//		bt.levelOrderTraversal(one);
-		//		end1 = System.nanoTime();
-		//		diff1 = end1-start1;
-		//		if(i>1) {
-		//			diff2+=diff1;
-		//		}
-		//		}System.out.println((diff2/9999999));
-		//		diff2 = 0;
-		//		for(int i=0; i<10000000; i++) {
-		//		start1 = System.nanoTime();
-		//		bt.inOrderTraversal(one);
-		//		end1 = System.nanoTime();
-		//		diff1 = end1-start1;
-		//		if(i>1) {
-		//			diff2+=diff1;
-		//		}
-		//		}System.out.println((diff2/9999999));
-		//		diff2 = 0;
-		//		for(int i=0; i<10000000; i++) {
-		//		start1 = System.nanoTime();
-		//		bt.postOrderTraversal(one);
-		//		end1 = System.nanoTime();
-		//		diff1 = end1-start1;
-		//		if(i>1) {
-		//			diff2+=diff1;
-		//		}
-		//		}System.out.println((diff2/9999999));
-		//		diff2 = 0;
-		//		for(int i=0; i<10000000; i++) {
-		//		start1 = System.nanoTime();
-		//		bt.inOrderIterative(one);
-		//		end1 = System.nanoTime();
-		//		diff1 = end1-start1;
-		//		if(i>1) {
-		//			diff2+=diff1;
-		//		}
-		//		}System.out.println((diff2/9999999));
-		//		diff2 = 0;
-		//		for(int i=0; i<10000000; i++) {
-		//		start1 = System.nanoTime();
-		//		bt.preOrderIterative(one);
-		//		end1 = System.nanoTime();
-		//		diff1 = end1-start1;
-		//		if(i>1) {
-		//			diff2+=diff1;
-		//		}
-		//		}System.out.println((diff2/9999999));
-		//		diff2 = 0;
-		//		for(int i=0; i<10000000; i++) {
-		//		start1 = System.nanoTime();
-		//		bt.postOrderIterative(one);
-		//		end1 = System.nanoTime();
-		//		diff1 = end1-start1;
-		//		if(i>1) {
-		//			diff2+=diff1;
-		//		}
-		//		}System.out.println((diff2/9999999));
-		//		diff2 = 0;
-		//		for(int i=0; i<10000000; i++) {
-		//		start1 = System.nanoTime();
-		//		bt.postOrderIterative2(one);
-		//		end1 = System.nanoTime();
-		//		diff1 = end1-start1;
-		//		if(i>1) {
-		//			diff2+=diff1;
-		//		}
-		//		}System.out.println((diff2/9999999));
-		//		
-		//System.out.println("\n"+bt.preorder());
-	}// Ending bracket of method main
 
 }// Ending bracket of class BinaryTree
