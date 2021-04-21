@@ -1,8 +1,18 @@
 package edu.mtc.egr283.project08;
 
+/**
+ * Binary Tree Program
+ * @author Jacob Vaught
+ * @professor William Sims
+ * @DueDate 04/28/2021
+ * @version 1.02 04.20.2021
+ * Copyright(c) 2021 Jacob C. Vaught. All rights reserved.
+ */
+
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.io.PrintStream;
 
 public class BinaryTree<T extends Comparable<T>> {
 	private BTNode<T> root;
@@ -35,9 +45,9 @@ public class BinaryTree<T extends Comparable<T>> {
 	 * @param newNode
 	 */
 	public void addNode(BTNode<T> newNode) {
-		this.addRecursive(newNode, this.getRoot());
+		this.setRoot(this.addRecursive( newNode, this.getRoot()));
 	}//Ending Bracket of Method
-	
+
 	/**
 	 * Removes a node in the Binary Tree
 	 * @param removeNode
@@ -87,7 +97,7 @@ public class BinaryTree<T extends Comparable<T>> {
 	public String inorder(BTNode<T> node) {
 		return this.inOrderTraversal(node);
 	}// Ending bracket of method preOrderTraversal
-	
+
 	/**
 	 * Returns a string starting from a specified root node
 	 * @param your root node
@@ -96,7 +106,7 @@ public class BinaryTree<T extends Comparable<T>> {
 	public String postorder(BTNode<T> node) {
 		return this.postOrderTraversal(node);
 	}// Ending bracket of method preOrderTraversal
-	
+
 	/**
 	 * Returns a string starting from a specified root node
 	 * @param your root node
@@ -105,17 +115,18 @@ public class BinaryTree<T extends Comparable<T>> {
 	public String levelorder(BTNode<T> node) {
 		return this.levelOrderTraversal(node);
 	}// Ending bracket of method preOrderTraversal
-	
+
 	/**
 	 *Normal toString method
-	 *Uses levelorder for to String
+	 *Uses Print2D for to String
 	 */
 	public String toString() {
-		return this.levelorder(this.getRoot());
+		return this.printTree2D();
 	}//ending bracket of method
-	
+
+
 	//private methods below
-	
+
 	/**
 	 * Sets the Root Node
 	 * @param newRoot
@@ -123,22 +134,24 @@ public class BinaryTree<T extends Comparable<T>> {
 	private void setRoot(BTNode<T> newRoot) {
 		this.root = newRoot;
 	}// Ending bracket of method setRoot
-	
+
 	/**
 	 * adds a node using recursion
 	 * @param newNode the new Node
 	 * @param rootNode the starting node to add below
 	 */
-	private void addRecursive(BTNode<T> newNode, BTNode<T> rootNode) {
+	private BTNode<T> addRecursive(BTNode<T> newNode, BTNode<T> rootNode) {
 		if(rootNode==null) {
 			rootNode = newNode;
+			return newNode;
 		}else if(newNode.compareTo(rootNode)<0) {
-			this.addRecursive(newNode, rootNode.getRight());
-		} else if(newNode.compareTo(rootNode)>=0) {
-			this.addRecursive(newNode, rootNode.getLeft());
+			rootNode.setRight(this.addRecursive(newNode, rootNode.getRight()));
+		} else if(newNode.compareTo(rootNode)>0) {
+			rootNode.setLeft(this.addRecursive(newNode, rootNode.getLeft()));
 		}//Ending bracket of if statement.
+		return rootNode;
 	}//Ending Bracket of Method
-	
+
 	/**
 	 * preOrder Recursion-private method
 	 * @param BTNode<T> node
@@ -168,7 +181,6 @@ public class BinaryTree<T extends Comparable<T>> {
 			BTNode<T> tempNode=queue.poll();
 			sb.append(tempNode.toString());
 			sb.append(" ");
-			System.out.println(tempNode.toString());
 			if(tempNode.getLeft()!=null) {
 				queue.add(tempNode.getLeft());
 			}if(tempNode.getRight()!=null) {
@@ -210,36 +222,53 @@ public class BinaryTree<T extends Comparable<T>> {
 		return sb.toString();
 	}//Ending Bracket of Method
 
+
+
+	//EVERYTHING BELOW HERE IS NOT REQUIRED (Just for my enjoyment) 
+	//may not have Java Docs
 	
+	public void traverseNodes(StringBuffer sb, String padding, String pointer, BTNode<T> node,  boolean hasRightSibling) {
+		if (node != null) {
+			sb.append("\n");
+			sb.append(padding);
+			sb.append(pointer);
+			sb.append(node.getData().toString());
+
+			StringBuffer paddingBuilder = new StringBuffer(padding);
+			if (hasRightSibling) {
+				paddingBuilder.append("|  ");
+			} else {
+				paddingBuilder.append("   ");
+			}
+
+			String paddingForBoth = paddingBuilder.toString();
+			String pointerRight = "'--";
+			String pointerLeft = (node.getRight() != null) ? "|--" : "'--";
+
+			traverseNodes(sb, paddingForBoth, pointerLeft, node.getLeft(), node.getRight() != null);
+			traverseNodes(sb, paddingForBoth, pointerRight, node.getRight(), false);
+		}
+	}
 	
-	//EVERYTHING BELOW HERE IS UNUSED (Just for my enjoyment) lol
-	
-	/**
-	 * adds a node using iteration
-	 * @param newNode the new Node
-	 * @param rootNode the starting node to add below
-	 */
-	private void addIterative(BTNode<T> newNode, BTNode<T> rootNode) {
-		boolean isDone=false;
-		BTNode<T> tempNode=rootNode;
-		if(tempNode==null) {
-			tempNode= newNode;
-			return;
-		} //Ending bracket of if statement.
-		do {
-			if(newNode.compareTo(tempNode)<0 && tempNode.getRight()!=null) {
-				tempNode=tempNode.getRight();
-			}else if(newNode.compareTo(tempNode)>=0 && tempNode.getLeft()!=null) {
-				tempNode=tempNode.getLeft();
-			}else if(newNode.compareTo(tempNode)<0 && tempNode.getRight()==null) {
-				tempNode.setRight(newNode);
-				break;
-			}else if(newNode.compareTo(tempNode)>=0 && tempNode.getLeft()==null) {
-				tempNode.setRight(newNode);
-				break;
-			}//Ending bracket of if statement.
-		}while(!isDone);
-	}//Ending Bracket of Method
+	public String traversePreOrder(BTNode<T> root) {
+		if (root == null) {
+			return "";
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append(root.getData().toString());
+
+		String pointerRight = "'--";
+		String pointerLeft = (root.getRight() != null) ? "|--" : "'--";
+
+		traverseNodes(sb, "", pointerLeft, root.getLeft(), root.getRight() != null);
+		traverseNodes(sb, "", pointerRight, root.getRight(), false);
+
+		return sb.toString();
+	}
+
+	public String printTree2D() {
+		return (traversePreOrder(this.getRoot()));
+	}
 
 	/**
 	 * inOrder Iteration-private method
