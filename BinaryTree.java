@@ -65,14 +65,34 @@ public class BinaryTree<T extends Comparable<T>> {
 				nodeStack.pop();
 				if (mynode.getRight() != null) {
 					if(mynode.getRight()==removeNode) {
+						if(mynode.getRight().getRight()!=null&&mynode.getRight().getLeft()!=null) {
+							return;
+						}else if(mynode.getRight().getRight()!=null) {
+							mynode.setRight(mynode.getRight().getRight());
+							return;
+						}else if(mynode.getRight().getLeft()!=null) {
+							mynode.setRight(mynode.getRight().getLeft());
+							return;
+						}else {
 						mynode.setRight(null);
 						return;
+						}
 					}//Ending bracket of if statement.
 					nodeStack.push(mynode.getRight());
 				}if (mynode.getLeft() != null) {
 					if(mynode.getLeft()==removeNode) {
+						if(mynode.getLeft().getRight()!=null&&mynode.getLeft().getLeft()!=null) {
+							return;
+						}else if(mynode.getLeft().getRight()!=null) {
+							mynode.setLeft(mynode.getLeft().getRight());
+							return;
+						}else if(mynode.getLeft().getLeft()!=null) {
+							mynode.setLeft(mynode.getLeft().getLeft());
+							return;
+						}else {
 						mynode.setLeft(null);
 						return;
+						}
 					}//Ending bracket of if statement.
 					nodeStack.push(mynode.getLeft());
 				}//Ending bracket of if statement.
@@ -146,7 +166,7 @@ public class BinaryTree<T extends Comparable<T>> {
 			return newNode;
 		}else if(newNode.compareTo(rootNode)<0) {
 			rootNode.setRight(this.addRecursive(newNode, rootNode.getRight()));
-		} else if(newNode.compareTo(rootNode)>0) {
+		} else if(newNode.compareTo(rootNode)>=0) {
 			rootNode.setLeft(this.addRecursive(newNode, rootNode.getLeft()));
 		}//Ending bracket of if statement.
 		return rootNode;

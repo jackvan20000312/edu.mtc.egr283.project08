@@ -50,12 +50,12 @@ public class BinaryTreeDriver {
 		
 		System.out.println("\nTesting toString() method");
 		Random random = new Random();
-		BTNode<Integer>[] arr = new BTNode[25];	
+		BTNode<Integer>[] arr = new BTNode[50];	
 		
-		arr[0]=new BTNode<Integer>((175));
+		arr[0]=new BTNode<Integer>((1000));
 		bt = new BinaryTree<Integer>(arr[0]);
-		for(int i=1; i<25; i++) {
-			arr[i]=new BTNode<Integer>((random.nextInt(500)));
+		for(int i=1; i<50; i++) {
+			arr[i]=new BTNode<Integer>((random.nextInt(2000)));
 			bt.addNode(arr[i]);
 		}//edn of for
 		System.out.println(bt.toString());
