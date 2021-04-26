@@ -245,8 +245,17 @@ public class BinaryTree<T extends Comparable<T>> {
 
 
 	//EVERYTHING BELOW HERE IS NOT REQUIRED (Just for my enjoyment) 
-	//may not have Java Docs
+	//may not have JavaDocs
 	
+	
+	/**
+	 * A cool tree 2d printer method I found online
+	 * @param sb
+	 * @param padding
+	 * @param pointer
+	 * @param node
+	 * @param hasRightSibling
+	 */
 	public void traverseNodes(StringBuffer sb, String padding, String pointer, BTNode<T> node,  boolean hasRightSibling) {
 		if (node != null) {
 			sb.append("\n");
@@ -270,6 +279,11 @@ public class BinaryTree<T extends Comparable<T>> {
 		}
 	}
 	
+	/**
+	 *  A cool tree 2d printer method I found online
+	 * @param root
+	 * @return
+	 */
 	public String traversePreOrder(BTNode<T> root) {
 		if (root == null) {
 			return "";
@@ -286,6 +300,10 @@ public class BinaryTree<T extends Comparable<T>> {
 		return sb.toString();
 	}
 
+	/**
+	 *  A cool tree 2d printer method I found online
+	 * @return
+	 */
 	public String printTree2D() {
 		return (traversePreOrder(this.getRoot()));
 	}
